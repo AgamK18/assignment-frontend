@@ -43,11 +43,10 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          path: process.cwd() + '/public/docs'
+          path: '/Users/myhq/Documents/truffles-fe/public/docs'
         }),
       });
 
-      console.log(pdfResponse);
 
       if (!pdfResponse.ok) {
         throw new Error('PDF generation failed');
