@@ -66,7 +66,7 @@ export default function Home() {
     <div className="min-h-screen p-8">
       <main className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold mb-4">Multiple File Upload and PDF Generation</h1>
+          <h1 className="text-2xl font-bold mb-4">KYC Document Checklist</h1>
           <div className="flex flex-col gap-4">
             <input
               type="file"
