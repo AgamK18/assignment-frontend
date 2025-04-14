@@ -6,6 +6,7 @@ import Image from "next/image";
 export default function Home() {
   const [pdfUrl, setPdfUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [totalFiles, setTotalFiles] = useState(0);
 
@@ -37,16 +38,14 @@ export default function Home() {
       }
 
       // After all files are uploaded, make a single API call
-      const pdfResponse = await fetch('http://localhost:4111/api/workflows/kycWorkflow/', {
+      setIsPdfLoading(true);
+      const pdfResponse = await fetch('http://localhost:4111/api/workflows/kycWorkflow/start-async', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          path: '/Users/myhq/Documents/truffles-fe/public/docs'
-        }),
+        body: JSON.stringify({ directoryPath: '/Users/myhq/Documents/truffles-fe/public/docs'}),
       });
-
 
       if (!pdfResponse.ok) {
         throw new Error('PDF generation failed');
@@ -59,6 +58,7 @@ export default function Home() {
       alert(error.message);
     } finally {
       setIsLoading(false);
+      setIsPdfLoading(false);
     }
   };
 
@@ -93,7 +93,13 @@ export default function Home() {
           </div>
         </div>
 
-        {pdfUrl && (
+        {isPdfLoading && (
+          <div className="mt-8 flex flex-col items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600 mb-4"></div>
+            <p className="text-gray-600">Generating PDF...</p>
+          </div>
+        )}
+        {pdfUrl && !isPdfLoading && (
           <div className="mt-8">
             <h2 className="text-xl font-semibold mb-4">Generated PDF</h2>
             <iframe
